@@ -1,0 +1,58 @@
+## k-Nearest Neighbors: Fit
+# Import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+y = churn_df["churn"].values
+X = churn_df[["account_length", "customer_service_calls"]].values
+
+# Create a KNN classifier with 6 neighbors
+knn = KNeighborsClassifier(n_neighbors=6)
+
+# Fit the classifier to the data
+knn.fit(X, y)
+
+
+## k-Nearest Neighbors: Predict
+# Predict the labels for the X_new
+y_pred = knn.predict(X_new)
+
+# Print the predictions
+print("Predictions: {}".format(y_pred))
+
+
+## Overfitting and underfitting
+# Create neighbors
+neighbors = np.arange(1, 13)
+train_accuracies = {}
+test_accuracies = {}
+
+for neighbor in neighbors:
+
+    # Set up a KNN Classifier
+    knn = KNeighborsClassifier(n_neighbors=neighbor)
+
+    # Fit the model
+    knn.fit(X_train, y_train)
+
+    # Compute accuracy
+    train_accuracies[neighbor] = knn.score(X_train, y_train)
+    test_accuracies[neighbor] = knn.score(X_test, y_test)
+print(neighbors, "\n", train_accuracies, "\n", test_accuracies)
+
+
+## Visualizing model complexity
+# Add a title
+plt.title("KNN: Varying Number of Neighbors")
+
+# Plot training accuracies
+plt.plot(neighbors, train_accuracies.values(), label="Training Accuracy")
+
+# Plot test accuracies
+plt.plot(neighbors, test_accuracies.values(), label="Testing Accuracy")
+
+plt.legend()
+plt.xlabel("Number of Neighbors")
+plt.ylabel("Accuracy")
+
+# Display the plot
+plt.show()
